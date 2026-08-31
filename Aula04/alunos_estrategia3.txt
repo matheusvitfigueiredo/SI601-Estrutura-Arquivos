@@ -1,0 +1,7 @@
+[
+  {"ra":"2300001","nome":"Ana Souza","anoNasc":2003},
+  {"ra":"2300002","nome":"Bruno Lima","anoNasc":2002},
+  {"ra":"2200010","nome":"Carla Mendes","anoNasc":2001},
+  {"ra":"2100099","nome":"Diego Ferreira","anoNasc":2000},
+  {"ra":"2400005","nome":"Erica Nascimento","anoNasc":2004}
+]

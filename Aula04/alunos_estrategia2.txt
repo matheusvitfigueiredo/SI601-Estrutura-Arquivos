@@ -1,0 +1,6 @@
+# delimitador=|
+2300001|Ana Souza|2003
+2300002|Bruno Lima|2002
+2200010|Carla Mendes|2001
+2100099|Diego Ferreira|2000
+2400005|Erica Nascimento|2004
