@@ -5,69 +5,46 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-    private static final int ESTRATEGIA = 3;
     public static void main(String[] args) {
+        String arquivo = "alunos.json";
 
         List<Aluno> original = Arrays.asList(
-                new Aluno("2300001", "Ana Souza", 2003),
-                new Aluno("2300002", "Bruno Lima", 2002),
-                new Aluno("2200010", "Carla Mendes", 2001),
-                new Aluno("2100099", "Diego Ferreira", 2000),
-                new Aluno("2400005", "Erica Nascimento", 2004)
+                new Aluno("196220", "Nelson Modenez Neto", 2005),
+                new Aluno("173012", "Gabriel Gaudio Saraiva", 2002),
+                new Aluno("288824", "Adriano Baumgarte Bassani Filho", 2001),
+                new Aluno("185720", "Julyo Elias Hidalgo Da Silva", 2000),
+                new Aluno("194774", "Matheus Vitório Figueiredo De Oliveira", 2006),
+                new Aluno("173888", "Carlos Alberto Sardenha Filho", 2004),
+                new Aluno("246507", "Hans William Hamann", 2005)
         );
 
-        String arquivo;
-        String titulo;
-        switch (ESTRATEGIA) {
-            case 1 -> {
-                arquivo = "alunos_estrategia1.txt";
-                titulo  = "Estratégia 1 – Prefixo de tamanho (2 dígitos por campo)";
-            }
-            case 2 -> {
-                arquivo = "alunos_estrategia2.txt";
-                titulo  = "Estratégia 2 – Delimitador \"|\"";
-            }
-            case 3 -> {
-                arquivo = "alunos_estrategia3.txt";
-                titulo  = "Estratégia 3 – JSON (chave-valor)";
-            }
-            default -> {
-                System.err.println("Estratégia inválida! Escolha 1, 2 ou 3.");
-                return;
-            }
-        }
-        System.out.println("  " + titulo);
+        System.out.println("=== Estrutura de Arquivos: JSON com GSON ===");
         System.out.println("\n[Lista original]");
         original.forEach(System.out::println);
 
+        // // Gravação em JSON
         try {
-            switch (ESTRATEGIA) {
-                case 1 -> AlunoArquivo.gravarEstrategia1(original, arquivo);
-                case 2 -> AlunoArquivo.gravarEstrategia2(original, arquivo);
-                case 3 -> AlunoArquivo.gravarEstrategia3(original, arquivo);
-            }
+            AlunoJsonIO.salvar(original, arquivo);
             System.out.println("\nGravado em: " + arquivo);
         } catch (IOException e) {
             System.err.println("Erro ao gravar: " + e.getMessage());
             return;
         }
 
+        // Leitura do JSON
         List<Aluno> lidos;
         try {
-            lidos = switch (ESTRATEGIA) {
-                case 1 -> AlunoArquivo.lerEstrategia1(arquivo);
-                case 2 -> AlunoArquivo.lerEstrategia2(arquivo);
-                case 3 -> AlunoArquivo.lerEstrategia3(arquivo);
-                default -> throw new IOException("Estratégia inválida.");
-            };
+            lidos = AlunoJsonIO.carregar(arquivo);
             System.out.println("Lido de: " + arquivo);
         } catch (IOException e) {
             System.err.println("Erro ao ler: " + e.getMessage());
             return;
         }
 
-        System.out.println("\n[Lista lida do arquivo]");
+        System.out.println("\n[Lista lida do arquivo JSON]");
         lidos.forEach(System.out::println);
+
+        // Verificação de integridade
         System.out.println("\n[Verificação de integridade]");
         boolean ok = original.size() == lidos.size();
         if (ok) {
@@ -82,7 +59,9 @@ public class Main {
             }
         }
         System.out.println(ok ? "Todos os " + original.size() + " registros conferem!" : "Foram encontradas diferenças.");
+
+        // Idades calculadas
         System.out.println("\n[Idades calculadas]");
-        lidos.forEach(a -> System.out.printf("  %-20s → %d anos%n", a.getNome(), a.getIdade()));
+        lidos.forEach(a -> System.out.printf("%-40s → %d anos%n", a.getNome(), a.getIdade()));
     }
 }
